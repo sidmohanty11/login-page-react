@@ -33,7 +33,7 @@ const Login = (props) => {
   //useReducer approach for multiple states assigned together
   const [emailState, dispatchEmail] = useReducer(reducerFn, { value: '', isValid: false });
   const [passwordState, dispatchPassword] = useReducer(reducerFn2, { value: '', isValid: false });
-  const [formIsValid, setFormIsValid] = useState(false);
+  // const [formIsValid, setFormIsValid] = useState(false);
 
 
   //useEffect approach
@@ -44,35 +44,39 @@ const Login = (props) => {
       console.log('EFFECT CLEANUP');
     };
   }, []);
+  
+  //only uses validity to useEffect not when value changes
+  const { isValid: emailValid } = emailState;
+  const { isValid: passwordValid } = passwordState;
 
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log('Checking form validity!');
-  //     setFormIsValid(
-  //       enteredEmail.includes('@') && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('Checking form validity!');
+      setFormIsValid(
+        emailValid && passwordValid
+      );
+    }, 500);
 
-  //   return () => {
-  //     console.log('CLEANUP');
-  //     clearTimeout(identifier);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    };
+  }, [emailValid, passwordValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({type:'USER_INPUT',val:event.target.value});
 
-    setFormIsValid(
-      emailState.value.includes('@') && passwordState.value.trim().length > 6
-    );
+    // setFormIsValid(
+    //   emailState.value.includes('@') && passwordState.isValid
+    // );
   };
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: 'USER_INPUT', val: event.target.value });
 
-    setFormIsValid(
-      emailState.isValid && passwordState.value.trim().length > 6
-    );
+    // setFormIsValid(
+    //   emailState.isValid && passwordState.value.trim().length > 6
+    // );
   };
 
   const validateEmailHandler = () => {
