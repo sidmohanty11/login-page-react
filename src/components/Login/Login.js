@@ -33,7 +33,7 @@ const Login = (props) => {
   //useReducer approach for multiple states assigned together
   const [emailState, dispatchEmail] = useReducer(reducerFn, { value: '', isValid: false });
   const [passwordState, dispatchPassword] = useReducer(reducerFn2, { value: '', isValid: false });
-  // const [formIsValid, setFormIsValid] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
 
 
   //useEffect approach
